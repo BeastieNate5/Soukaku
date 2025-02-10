@@ -4,6 +4,7 @@
 #include<bitset>
 #include<vector>
 #include<string>
+#include<chrono>
 
 #include<stdio.h>
 
@@ -13,6 +14,7 @@
 struct solveInfo {
     bool solved;
     int cycles = 0;
+    std::chrono::microseconds ms;
 };
 
 typedef std::array<std::array<int, 9>,9> boardArray;
@@ -92,10 +94,17 @@ bool fillBoard(boardArray& board, const char* puzzleFile) {
 }
 
 void displayBoard(const boardArray& board) {
-    
+    int pColorCell = 0;
     for (int row = 0; row < 9; row++) {
         for (int col = 0; col < 9; col++) {
-            printf("%d", board[row][col]);
+
+            if (std::pair<int, int>(row, col) == editableCells[pColorCell]) {
+                pColorCell += 1;
+                printf("\033[92m%d\033[0m", board[row][col]);
+            }
+            else {
+                printf("%d", board[row][col]);
+            }
 
             if ((col+1) % 3 == 0 && col != 8) {
                 printf(" | ");
@@ -120,7 +129,10 @@ void backTraceSolve(solveInfo& si, boardArray& board) {
     int lenEditable = editableCells.size();
 
     while (true) {
+        auto t1 = std::chrono::high_resolution_clock::now();
         if (pIndex >= lenEditable) {
+            auto t2 = std::chrono::high_resolution_clock::now();
+            si.ms = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1);
             if (DEBUG) {
                 clearScreen();
             }
@@ -198,5 +210,5 @@ int main(int argc, char** argv) {
 
     std::cout << std::endl;
     displayBoard(board);
-    std::cout << "\nSolution Found\nCycles: " << si.cycles << "\n" << std::endl;
+    std::cout << "\nSolution Found\nSolve Time: " << si.ms.count() << "us" << "\nCycles: "  << si.cycles << "\n" << std::endl;
 }
