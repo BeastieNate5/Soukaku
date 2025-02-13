@@ -27,7 +27,7 @@ make
 ### Windows Details
 If you are on Windows by default it will create a Visual Studio Solution. Open up `Developer Command Prompt for VS 2022` by searching that in the start menu. The run the following command in the build directory you should have made.
 ```
-msbuild subnetter.sln /p:Configuration=Release
+msbuild soukaku.sln /p:Configuration=Release
 ```
 This will compile the Visual Studio Solution and put the executable in `release/`
 
