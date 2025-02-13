@@ -9,7 +9,7 @@
 #include<stdio.h>
 
 #define clearScreen() std::cout << "\033[2J\033[H" 
-#define displayUsage() std::cout << "<NAME> <PUZZLE FILE>" << std::endl;
+#define displayUsage() std::cout << "soukaku <PUZZLE FILE>" << std::endl;
 
 struct solveInfo {
     bool solved;
